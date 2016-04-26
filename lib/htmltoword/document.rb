@@ -113,16 +113,14 @@ module Htmltoword
     def local_images(source)
       source.css('img').each_with_index do |image,i|
         filename = image['data-filename'] ? image['data-filename'] : image['src'].split("/").last
-        ext = ext_from_filename(filename)
+        ext = File.extname(filename).delete(".").downcase
 
         @image_files << { filename: "image#{i+1}.#{ext}", url: image['src'], ext: ext }
       end
     end
 
-    #get extension from filename and clean to match content_types
-    def ext_from_filename(filename)
-      ext = File.extname(filename).delete(".").downcase
-
+    #get content type from extension
+    def content_type_from_extension(ext)
       case ext
       when "jpg" then "jpeg"
       when "tif" then "tiff"
@@ -145,7 +143,7 @@ module Htmltoword
 
       #inject missing extensions into document
       missing_exts.each do |ext|
-        doc.at_css("Types").add_child( "<Default Extension='#{ext}' ContentType='image/#{ext}'/>")
+        doc.at_css("Types").add_child( "<Default Extension='#{ext}' ContentType='image/#{content_type_from_extension(ext)}'/>")
       end
 
       #return the amended source to be saved into the zip
