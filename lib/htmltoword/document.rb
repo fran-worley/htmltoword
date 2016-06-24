@@ -67,7 +67,7 @@ module Htmltoword
             elsif @replaceable_files[entry.name]
               out.write(@replaceable_files[entry.name])
             elsif entry.name == Document.content_types_xml_file
-              out.write(inject_image_content_types(entry.get_input_stream.read)) if @image_files.size > 0
+              out.write(inject_image_content_types(entry.get_input_stream.read))
             else
               out.write(template_zip.read(entry.name))
             end
