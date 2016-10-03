@@ -82,7 +82,6 @@ module Htmltoword
               open(hash[:url], 'rb') do |f|
                 out.write(f.read)
               end
-              #out.write File.open(hash[:url], 'rb').read
             end
           end
         end
